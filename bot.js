@@ -1,6 +1,14 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
+const SERVERS = [
+    'top-100-alliances', 
+    'top-250-alliances', 
+    'top-500-alliances', 
+    'top-1000-alliances', 
+    'over-1000-alliances', 
+    'looking-for-alliance'];
+
 bot.login(process.env.BOT_TOKEN);
 
 function attachIsImage(msgAttach) {
@@ -34,7 +42,7 @@ bot.on('message', function (msg) {
     if (msg.content.indexOf('tyejae') > -1) {
         console.log(`[INFO] ${msg.author.username} said, "${msg.content}"`)
     }
-    if (msg.channel.name === 'looking-for-alliance' && !msg.author.bot && !isAdminOrMod(msg.member)) {
+    if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot && !isAdminOrMod(msg.member)) {
         console.log(`[INFO] ${msg.author.username} said, "${msg.content}"`)
         if (msg.mentions.members.first()) {
             msg.channel
