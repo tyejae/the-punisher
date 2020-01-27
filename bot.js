@@ -2,11 +2,12 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 const SERVERS = [
-    'top-100-alliances', 
-    'top-250-alliances', 
-    'top-500-alliances', 
-    'top-1000-alliances', 
-    'over-1000-alliances', 
+    'players-under-1m', 
+    'players-above-1m', 
+    'players-above-2m', 
+    'players-above-3m', 
+    'players-above-4m', 
+    'players-above-5m',
     'looking-for-alliance'];
 
 bot.login(process.env.BOT_TOKEN);
