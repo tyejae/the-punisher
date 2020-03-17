@@ -15,11 +15,11 @@ bot.login(process.env.BOT_TOKEN);
 function attachIsImage(msgAttach) {
     var url = msgAttach.url;
     //True if this url is a png image.
-    return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1 || url.indexOf("jpg", url.length - "jpg".length /*or 3*/) !== -1;
+    return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1 || url.indexOf("jpg", url.length - "jpg".length /*or 3*/ || url.indexOf("jpeg", url.length - "jpeg".length /*or 3*/) !== -1;
 }
 
 function messageHasHyperlinkedImage(text) {
-    return text.indexOf('.jpg') > -1 || text.indexOf('.png') > -1;
+    return text.indexOf('.jpg') > -1 || text.indexOf('.png') > -1 || text.indexOf('.jpeg') > -1;
 }
 
 function isAdminOrMod(member) {
@@ -44,7 +44,7 @@ bot.on('message', function (msg) {
         console.log(`[INFO] ${msg.author.username} said, "${msg.content}"`)
     }
     if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot && !isAdminOrMod(msg.member)) {
-        console.log(`[INFO] ${msg.author.username} said, "${msg.content}"`)
+        console.log(`[INFO - ${msg.channel.name}] ${msg.author.username} said, "${msg.content}"`)
         if (msg.mentions.members.first()) {
             msg.channel
                 .send(`${msg.author}, it's directly against the rules of this channel to @ people in regards to a listing. Use PMs, @ them in #general-chat.`)
