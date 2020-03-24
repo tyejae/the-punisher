@@ -15,7 +15,7 @@ bot.login(process.env.BOT_TOKEN);
 function attachIsImage(msgAttach) {
     var url = msgAttach.url;
     //True if this url is a png image.
-    return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1 || url.indexOf("jpg", url.length - "jpg".length /*or 3*/ || url.indexOf("jpeg", url.length - "jpeg".length /*or 3*/) !== -1;
+    return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1 || url.indexOf("jpg", url.length - "jpg".length /*or 3*/) || url.indexOf("jpeg", url.length - "jpeg".length /*or 3*/) !== -1;
 }
 
 function messageHasHyperlinkedImage(text) {
