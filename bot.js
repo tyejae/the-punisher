@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+const Request = require('request');
 
 const SERVERS = [
     'players-under-1m', 
@@ -35,15 +36,44 @@ function isAdminOrMod(member) {
       }
 }
 
+async function getPower(message) {
+    let userGuid;
+    let power = 0;
+    const userGuidPromise = new Promise((resolve) => {
+        Request(`https://run.tyejae.com/services/msfggbot/getUserGuid?memberId=${message.author.id}`, (error, response, body) => {
+            if (!error && response.statusCode == 200) {
+                userGuid = body;
+            }
+            resolve();
+        })
+    });
+    await Promise.all([userGuidPromise]);
+    const rosterPromise = new Promise(resolve => {
+        Request(`https://run.tyejae.com/services/getRoster?userGuid=${userGuid}&nocache=${Date.now()}`, (error, response, body) => {
+            if (!error && response.statusCode == 200) {
+                try {
+                    const obj = JSON.parse(body);
+                    if (typeof obj === "object") {
+                        Object.keys(obj).forEach(key => {power += parseInt(obj[key].power)});
+                    }
+                } catch (e) {}
+            }
+            resolve();
+        });
+    });
+    await Promise.all([rosterPromise]);
+    return power;
+}
+
 bot.on("ready", function() {
     console.log(`Ready as: ${bot.user.tag}`);
 })
 
-bot.on('message', function (msg) {
+bot.on('message', async function (msg) {
     if (msg.content.indexOf('tyejae') > -1) {
         console.log(`[INFO] ${msg.author.username} said, "${msg.content}"`)
     }
-    if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot && !isAdminOrMod(msg.member)) {
+    if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot /*&& !isAdminOrMod(msg.member)*/) {
         console.log(`[INFO - ${msg.channel.name}] ${msg.author.username} said, "${msg.content}"`)
         if (msg.mentions.members.first()) {
             msg.channel
@@ -59,6 +89,37 @@ bot.on('message', function (msg) {
                 msg.delete(1000);
                 console.log(`   [MESSAGE DELETED]`)
             } else {
+                let power = await getPower(msg);
+                if (power === 0) {
+                    switch(msg.channel.name) {
+                        case 'players-under-1m': power = 999999; break;
+                        case 'players-above-1m': power = 1000001; break;
+                        case 'players-above-2m': power = 2000001; break;
+                        case 'players-above-3m': power = 3000001; break;
+                        case 'players-above-4m': power = 4000001; break;
+                        case 'players-above-5m': power = 5000001; break;
+                    }
+                }
+                let content = msg.content;
+                if (content === '') {
+                    content = '*No message provided*';
+                } else if (content.length > 155) {
+                    content = content.substr(0, 153) + '...';
+                }
+                var postBody = {
+                    url: 'https://run.tyejae.com/services/msfggbot/joinLookingForAlliance',
+                    body: JSON.stringify({
+                        memberId: msg.author.id,
+                        tag: msg.author.tag,
+                        power: power,
+                        description: encodeURI(content),
+                        rosterUrl: msg.attachments.first().proxyURL
+                    }),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                };
+                Request.post(postBody, () => {});
                 msg.author
                     .send('Thank you for posting. Please be aware that you can only post every 24 hours. Happy Alliance hunting!')
                     .catch(() => msg.channel
@@ -66,6 +127,36 @@ bot.on('message', function (msg) {
                                     .then(reply => reply.delete(300000)));
             }
         } else if (messageHasHyperlinkedImage(msg.content)) {
+            let power = await getPower(msg);
+            if (power === 0) {
+                switch(msg.channel.name) {
+                    case 'players-under-1m': power = 999999; break;
+                    case 'players-above-1m': power = 1000001; break;
+                    case 'players-above-2m': power = 2000001; break;
+                    case 'players-above-3m': power = 3000001; break;
+                    case 'players-above-4m': power = 4000001; break;
+                    case 'players-above-5m': power = 5000001; break;
+                }
+            }
+            let content = msg.content;
+            if (content === '') {
+                content = '*No message provided*';
+            } else if (content.length > 155) {
+                content = content.substr(0, 153) + '...';
+            }
+            var postBody = {
+                url: 'https://run.tyejae.com/services/msfggbot/joinLookingForAlliance',
+                body: JSON.stringify({
+                    memberId: msg.author.id,
+                    tag: msg.author.tag,
+                    power: power,
+                    description: encodeURI(content)
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            };
+            Request.post(postBody, () => {});
             msg.author
                     .send('Thank you for posting. Please be aware that you can only post every 24 hours. Happy Alliance hunting!')
                     .catch(() => msg.channel
