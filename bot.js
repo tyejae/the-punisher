@@ -73,7 +73,7 @@ bot.on('message', async function (msg) {
     if (msg.content.indexOf('tyejae') > -1) {
         console.log(`[INFO] ${msg.author.username} said, "${msg.content}"`)
     }
-    if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot /*&& !isAdminOrMod(msg.member)*/) {
+    if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot && !isAdminOrMod(msg.member)) {
         console.log(`[INFO - ${msg.channel.name}] ${msg.author.username} said, "${msg.content}"`)
         if (msg.mentions.members.first()) {
             msg.channel
