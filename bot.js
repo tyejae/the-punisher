@@ -9,6 +9,9 @@ const SERVERS = [
     'players-above-3m', 
     'players-above-4m', 
     'players-above-5m',
+    'players-above-6m',
+    'players-above-7m',
+    'players-above-8m',
     'looking-for-alliance'];
 
 bot.login(process.env.BOT_TOKEN);
@@ -98,6 +101,9 @@ bot.on('message', async function (msg) {
                         case 'players-above-3m': power = 3000001; break;
                         case 'players-above-4m': power = 4000001; break;
                         case 'players-above-5m': power = 5000001; break;
+                        case 'players-above-6m': power = 6000001; break;
+                        case 'players-above-7m': power = 7000001; break;
+                        case 'players-above-8m': power = 8000001; break;
                     }
                 }
                 let content = msg.content;
@@ -136,6 +142,9 @@ bot.on('message', async function (msg) {
                     case 'players-above-3m': power = 3000001; break;
                     case 'players-above-4m': power = 4000001; break;
                     case 'players-above-5m': power = 5000001; break;
+                    case 'players-above-6m': power = 6000001; break;
+                    case 'players-above-7m': power = 7000001; break;
+                    case 'players-above-8m': power = 8000001; break;
                 }
             }
             let content = msg.content;
