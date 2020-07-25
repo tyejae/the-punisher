@@ -43,7 +43,7 @@ async function getPower(message) {
     let userGuid;
     let power = 0;
     const userGuidPromise = new Promise((resolve) => {
-        Request(`https://run.tyejae.com/services/msfggbot/getUserGuid?memberId=${message.author.id}`, (error, response, body) => {
+        Request(`https://api.tyejae.com/services/msfggbot/getUserGuid?memberId=${message.author.id}`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 userGuid = body;
             }
@@ -52,7 +52,7 @@ async function getPower(message) {
     });
     await Promise.all([userGuidPromise]);
     const rosterPromise = new Promise(resolve => {
-        Request(`https://run.tyejae.com/services/getRoster?userGuid=${userGuid}&nocache=${Date.now()}`, (error, response, body) => {
+        Request(`https://api.tyejae.com/services/getRoster?userGuid=${userGuid}&nocache=${Date.now()}`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 try {
                     const obj = JSON.parse(body);
@@ -113,7 +113,7 @@ bot.on('message', async function (msg) {
                     content = content.substr(0, 153) + '...';
                 }
                 var postBody = {
-                    url: 'https://run.tyejae.com/services/msfggbot/joinLookingForAlliance',
+                    url: 'https://api.tyejae.com/services/msfggbot/joinLookingForAlliance',
                     body: JSON.stringify({
                         memberId: msg.author.id,
                         tag: msg.author.tag,
@@ -154,7 +154,7 @@ bot.on('message', async function (msg) {
                 content = content.substr(0, 153) + '...';
             }
             var postBody = {
-                url: 'https://run.tyejae.com/services/msfggbot/joinLookingForAlliance',
+                url: 'https://api.tyejae.com/services/msfggbot/joinLookingForAlliance',
                 body: JSON.stringify({
                     memberId: msg.author.id,
                     tag: msg.author.tag,
