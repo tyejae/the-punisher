@@ -118,7 +118,12 @@ bot.on('message', async function (msg) {
                         memberId: msg.author.id,
                         tag: msg.author.tag,
                         power: power,
-                        description: encodeURI(content),
+                        description: encodeURIComponent(content)
+                            .replace(/!/g, '%21')
+                            .replace(/'/g, '%27')
+                            .replace(/\(/g, '%28')
+                            .replace(/\)/g, '%29')
+                            .replace(/\*/g, '%2A'),
                         rosterUrl: msg.attachments.first().proxyURL
                     }),
                     headers: {
