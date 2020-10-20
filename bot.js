@@ -154,7 +154,7 @@ bot.on('message', async function (msg) {
                             .replace(/\)/g, '%29')
                             .replace(/\*/g, '%2A'),
                         rosterUrl: msg.attachments.first().proxyURL,
-                        notify: 1
+                        notify: '1'
                     }),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -195,7 +195,7 @@ bot.on('message', async function (msg) {
                     tag: msg.author.tag,
                     power: power,
                     description: encodeURI(content),
-                    notify: 1
+                    notify: '1'
                 }),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
