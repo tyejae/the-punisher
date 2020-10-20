@@ -124,7 +124,8 @@ bot.on('message', async function (msg) {
                             .replace(/\(/g, '%28')
                             .replace(/\)/g, '%29')
                             .replace(/\*/g, '%2A'),
-                        rosterUrl: msg.attachments.first().proxyURL
+                        rosterUrl: msg.attachments.first().proxyURL,
+                        notify: 1
                     }),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
