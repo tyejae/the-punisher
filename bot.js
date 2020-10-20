@@ -72,13 +72,42 @@ bot.on("ready", function() {
     console.log(`Ready as: ${bot.user.tag}`);
 })
 
+bot.on('messageUpdate', (oldMessage, newMessage) => {
+    if (SERVERS.indexOf(newMessage.channel.name) > -1) {
+        var postBody = {
+            url: 'https://api.tyejae.com/services/msfggbot/updateLookingForAlliance',
+            body: JSON.stringify({
+                memberId: newMessage.author.id,
+                description: encodeURIComponent(newMessage.content)
+                    .replace(/!/g, '%21')
+                    .replace(/'/g, '%27')
+                    .replace(/\(/g, '%28')
+                    .replace(/\)/g, '%29')
+                    .replace(/\*/g, '%2A')
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        };
+        Request.post(postBody, (error, res, body) => {
+            console.log(body)
+        });
+    }
+})
+
+bot.on('messageDelete', async function (msg) {
+    if (SERVERS.indexOf(msg.channel.name) > -1) {
+        Request.get(`https://api.tyejae.com/services/msfggbot/cancelLookingForAlliance?memberId=${msg.author.id}`);
+    }
+})
+
 bot.on('message', async function (msg) {
     if (msg.content.indexOf('tyejae') > -1) {
         console.log(`[INFO] ${msg.author.username} said, "${msg.content}"`)
     }
-    if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot && !isAdminOrMod(msg.member)) {
+    if (SERVERS.indexOf(msg.channel.name) > -1) {
         console.log(`[INFO - ${msg.channel.name}] ${msg.author.username} said, "${msg.content}"`)
-        if (msg.mentions.members.first()) {
+        if (msg.mentions.members.first() && !msg.author.bot && !isAdminOrMod(msg.member)) {
             msg.channel
                 .send(`${msg.author}, it's directly against the rules of this channel to @ people in regards to a listing. Use PMs, @ them in #general-chat.`)
                 .then(reply => reply.delete(60000))
@@ -124,7 +153,8 @@ bot.on('message', async function (msg) {
                             .replace(/\(/g, '%28')
                             .replace(/\)/g, '%29')
                             .replace(/\*/g, '%2A'),
-                        rosterUrl: msg.attachments.first().proxyURL
+                        rosterUrl: msg.attachments.first().proxyURL,
+                        notify: 1
                     }),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -164,7 +194,8 @@ bot.on('message', async function (msg) {
                     memberId: msg.author.id,
                     tag: msg.author.tag,
                     power: power,
-                    description: encodeURI(content)
+                    description: encodeURI(content),
+                    notify: 1
                 }),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -176,7 +207,7 @@ bot.on('message', async function (msg) {
                     .catch(() => msg.channel
                                     .send(`${msg.author}, make sure you have Direct Messages turned on so that Alliance Leaders can contact you directly.`)
                                     .then(reply => reply.delete(300000)));
-        } else {
+        } else if (!msg.author.bot && !isAdminOrMod(msg.member)) {
             msg.channel
                 .send(`${msg.author}, you have to post a screenshot of your PROFILE, which shows your highest team power, your collection score, as well as your contact information in-game.`)
                 .then(reply => reply.delete(60000))
