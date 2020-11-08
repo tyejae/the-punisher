@@ -166,7 +166,7 @@ bot.on('message', async function (msg) {
                 };
                 Request.post(postBody, () => {});
                 msg.author
-                    .send('Thank you for posting. Please be aware that you can only post every 24 hours. Happy Alliance hunting!')
+                .send(`Thank you for posting. Please be aware that you can only post every 6 hours. Good luck in finding an alliance!\n\nYou can also view your post online at https://msf.gg/recruit/${msg.author.id}`)
                     .catch(() => msg.channel
                                     .send(`${msg.author}, make sure you have Direct Messages turned on so that Alliance Leaders can contact you directly.`)
                                     .then(reply => reply.delete(300000)));
@@ -209,7 +209,7 @@ bot.on('message', async function (msg) {
             };
             Request.post(postBody, () => {});
             msg.author
-                    .send('Thank you for posting. Please be aware that you can only post every 24 hours. Happy Alliance hunting!')
+                    .send(`Thank you for posting. Please be aware that you can only post every 6 hours. Good luck in finding an alliance!\n\nYou can also view your post online at https://msf.gg/recruit/${msg.author.id}`)
                     .catch(() => msg.channel
                                     .send(`${msg.author}, make sure you have Direct Messages turned on so that Alliance Leaders can contact you directly.`)
                                     .then(reply => reply.delete(300000)));
