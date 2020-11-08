@@ -151,6 +151,7 @@ bot.on('message', async function (msg) {
                         memberId: msg.author.id,
                         tag: msg.author.tag,
                         power: power,
+                        messageId: msg.id,
                         description: encodeURIComponent(content)
                             .replace(/!/g, '%21')
                             .replace(/'/g, '%27')
@@ -200,6 +201,7 @@ bot.on('message', async function (msg) {
                     memberId: msg.author.id,
                     tag: msg.author.tag,
                     power: power,
+                    messageId: msg.id,
                     description: encodeURI(content),
                     notify: '1'
                 }),
