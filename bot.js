@@ -32,8 +32,7 @@ const GUILD_SERVER_IDS = {
     ]
 }
 
-// bot.login(process.env.BOT_TOKEN);
-bot.login('NTA0NzAzMTk5NTQyNzcxNzEy.Xnor4g.-MjDl2tgWygRjPHK3YPFEd3Dn7M');
+bot.login(process.env.BOT_TOKEN);
 
 const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () => {
     const expired = await getExpiredRecruits();
