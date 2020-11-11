@@ -32,7 +32,8 @@ const GUILD_SERVER_IDS = {
     ]
 }
 
-bot.login(process.env.BOT_TOKEN);
+// bot.login(process.env.BOT_TOKEN);
+bot.login('NTA0NzAzMTk5NTQyNzcxNzEy.Xnor4g.-MjDl2tgWygRjPHK3YPFEd3Dn7M');
 
 const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () => {
     const expired = await getExpiredRecruits();
@@ -90,7 +91,7 @@ const checkForNewRecruits = new cron.CronJob('* * * * *', async () => {
                     'embed': {
                         'title': `${recruit.tag.replace('(MSF.gg)', '')} is Looking For Alliance`,
                         'url': `https://msf.gg/recruit/${recruit.memberId}`,
-                        'description': `**Power:** ${recruit.power.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}\n**Description:**\n${decodeURIComponent(recruit.description)}\n\n*To invite ${tag} to your alliance go to https://msf.gg/recruit/${recruit.memberId}*\n*To view ${tag}'s roster go to ${recruit.rosterUrl}*${recruit.memberId.length > 13 ? `*\nContact on Discord:\n<@${recruit.memberId}>*` : ''}`,
+                        'description': `**Power:** ${recruit.power.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}\n**Description:**\n${decodeURIComponent(recruit.description)}\n\n*To invite ${tag} to your alliance go to https://msf.gg/recruit/${recruit.memberId}*\n*To view ${tag}'s roster go to\n${recruit.rosterUrl}${recruit.memberId.length > 13 ? `\n*Contact on Discord:\n<@${recruit.memberId}>*` : ''}`,
                         'color': 16760576,
                         'thumbnail': {
                             url: 'https://msf.gg/search.png',
