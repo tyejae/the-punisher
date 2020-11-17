@@ -198,13 +198,43 @@ async function getPower(message) {
     return power;
 }
 
-const BANNED_EMOJI = ['🖕', '💩', '🍆'];
-bot.on('messageReactionAdd', (reaction, user) => {
-    console.log(reaction.emoji.name)
-    if (BANNED_EMOJI.indexOf(reaction.emoji.name) > -1) {
-        reaction.remove();
+const BANNED_EMOJI = ['🖕', '🖕🏻', '🖕🏿', '🖕🏼', '🖕🏾', '🖕🏽', '💩', '🍆'];
+bot.on('raw', async (event) => {
+    if (event.t === 'MESSAGE_REACTION_ADD') {
+        if (BANNED_EMOJI.indexOf(event.d.emoji.name) > -1) {
+            const g = bot.guilds.array().find(guild => guild.id === event.d.guild_id);
+            if (g) {
+                const c = g.channels.array().find(c => c.id === event.d.channel_id);
+                if (c) {
+                    const message = await c.fetchMessage(event.d.message_id)
+                    if (message) {
+                        message.reactions.filter(r => r.remove(event.d.user_id))
+                        const member = g.members.find(m => m.id === event.d.user_id);
+                        if (member) {
+                            member.send(`**Inappropriate reactions are not allowed on the MARVEL Strike Force Discord.** Your reaction has been removed automatically. Please review the #read-me and #code-of-conduct channels to familiarize yourself with the server rules.`)
+                                .catch(()=>{})
+                        }
+                        const logChannel = g.channels.array().find(c => c.id === '387582681107660810');
+                        if (logChannel) {
+                            logChannel.send({
+                                "embed": {
+                                  "description": `This user used the ${event.d.emoji.name} emoji in #${c.name}`,
+                                  "color": 14686582,
+                                  "author": {
+                                    "name": `${member.user.tag} (${member.id}) - Deleted Emoji`,
+                                    "icon_url": member.user.avatarURL
+                                  }
+                                }
+                              });
+                        }
+                    }
+                    
+                }
+            }
+        }
     }
-});
+})
+
 
 bot.once("ready", function() {
     console.log(`Ready as: ${bot.user.tag}`);
