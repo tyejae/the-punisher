@@ -198,6 +198,10 @@ async function getPower(message) {
     return power;
 }
 
+bot.on('messageReactionAdd', (reaction, user) => {
+    console.log(reaction.emoji.name)
+});
+
 bot.once("ready", function() {
     console.log(`Ready as: ${bot.user.tag}`);
     checkForNewRecruits.start();
