@@ -198,8 +198,12 @@ async function getPower(message) {
     return power;
 }
 
+const BANNED_EMOJI = ['🖕', '💩', '🍆'];
 bot.on('messageReactionAdd', (reaction, user) => {
     console.log(reaction.emoji.name)
+    if (BANNED_EMOJI.indexOf(reaction.emoji.name) > -1) {
+        reaction.remove();
+    }
 });
 
 bot.once("ready", function() {
