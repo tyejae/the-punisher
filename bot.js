@@ -199,22 +199,23 @@ async function getPower(message) {
 }
 
 const BANNED_EMOJI = ['🖕', '🖕🏻', '🖕🏿', '🖕🏼', '🖕🏾', '🖕🏽', '💩', '🍆'];
+const DELETE_REACTION = {};
 bot.on('raw', async (event) => {
     if (event.t === 'MESSAGE_REACTION_ADD') {
         if (BANNED_EMOJI.indexOf(event.d.emoji.name) > -1) {
-            const g = bot.guilds.array().find(guild => guild.id === event.d.guild_id);
+            const g = bot.guilds.cache.array().find(guild => guild.id === event.d.guild_id);
             if (g) {
-                const c = g.channels.array().find(c => c.id === event.d.channel_id);
+                const c = g.channels.cache.array().find(c => c.id === event.d.channel_id);
                 if (c) {
-                    const message = await c.fetchMessage(event.d.message_id)
+                    const message = await c.messages.fetch(event.d.message_id)
                     if (message) {
-                        message.reactions.filter(r => r.remove(event.d.user_id))
-                        const member = g.members.find(m => m.id === event.d.user_id);
+                        const member = await g.members.fetch(event.d.user_id);
+                        DELETE_REACTION[event.d.user_id] = event.d.message_id;
                         if (member) {
                             member.send(`**Inappropriate reactions are not allowed on the MARVEL Strike Force Discord.** Your reaction has been removed automatically. Please review the #read-me and #code-of-conduct channels to familiarize yourself with the server rules.`)
                                 .catch(()=>{})
                         }
-                        const logChannel = g.channels.array().find(c => c.id === '387582681107660810');
+                        const logChannel = g.channels.cache.array().find(c => c.id === '387582681107660810');
                         if (logChannel) {
                             logChannel.send({
                                 "embed": {
@@ -235,6 +236,14 @@ bot.on('raw', async (event) => {
     }
 })
 
+bot.on('messageReactionAdd', (r, u) => {
+    setTimeout(() => {
+        if (DELETE_REACTION[u.id]) {
+            r.remove()
+            delete DELETE_REACTION[u.id]
+        }
+    }, 150)
+}) 
 
 bot.once("ready", function() {
     console.log(`Ready as: ${bot.user.tag}`);
