@@ -32,7 +32,8 @@ const GUILD_SERVER_IDS = {
     ]
 }
 
-bot.login(process.env.BOT_TOKEN);
+// bot.login(process.env.BOT_TOKEN);
+bot.login('NTA0NzAzMTk5NTQyNzcxNzEy.W9Cnew.AGswXDy4FgV7ARsUYtmOw-QjO_c');
 
 const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () => {
     const expired = await getExpiredRecruits();
@@ -58,31 +59,31 @@ const checkForNewRecruits = new cron.CronJob('* * * * *', async () => {
     const recruits = await getNewRecruits();
     recruits.forEach(recruit => {
         const power = parseInt(recruit.power);
-        bot.guilds.array().forEach(g => {
+        bot.guilds.cache.array().forEach(g => {
             let channel;
             const servers = GUILD_SERVER_IDS[g.id];
             if (power > 10000000) {
-                channel = g.channels.find(c => c.id === servers[10])
+                channel = g.channels.cache.find(c => c.id === servers[10])
             } else if (power > 9000000) {
-                channel = g.channels.find(c => c.id === servers[9])
+                channel = g.channels.cache.find(c => c.id === servers[9])
             } else if (power > 8000000) {
-                channel = g.channels.find(c => c.id === servers[8])
+                channel = g.channels.cache.find(c => c.id === servers[8])
             } else if (power > 7000000) {
-                channel = g.channels.find(c => c.id === servers[7])
+                channel = g.channels.cache.find(c => c.id === servers[7])
             } else if (power > 6000000) {
-                channel = g.channels.find(c => c.id === servers[6])
+                channel = g.channels.cache.find(c => c.id === servers[6])
             } else if (power > 5000000) {
-                channel = g.channels.find(c => c.id === servers[5])
+                channel = g.channels.cache.find(c => c.id === servers[5])
             } else if (power > 4000000) {
-                channel = g.channels.find(c => c.id === servers[4])
+                channel = g.channels.cache.find(c => c.id === servers[4])
             } else if (power > 3000000) {
-                channel = g.channels.find(c => c.id === servers[3])
+                channel = g.channels.cache.find(c => c.id === servers[3])
             } else if (power > 2000000) {
-                channel = g.channels.find(c => c.id === servers[2])
+                channel = g.channels.cache.find(c => c.id === servers[2])
             } else if (power > 1000000) {
-                channel = g.channels.find(c => c.id === servers[1])
+                channel = g.channels.cache.find(c => c.id === servers[1])
             } else if (power <= 1000000) {
-                channel = g.channels.find(c => c.id === servers[0])
+                channel = g.channels.cache.find(c => c.id === servers[0])
             }
             if (channel) {
                 const tag = recruit.tag.replace('(MSF.gg)', '').trim();
