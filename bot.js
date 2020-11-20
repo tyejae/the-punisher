@@ -40,7 +40,7 @@ const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () =>
         const guildId = recruit.guildId;
         const channelId = recruit.channelId;
         const messageId = recruit.messageId;
-        const guild = bot.guilds.find(g => g.id === guildId);
+        const guild = bot.guilds.cache.find(g => g.id === guildId);
         if (guild) {
             const channel = guild.channels.find(c => c.id === channelId);
             if (channel) {
