@@ -160,7 +160,7 @@ function isAdminOrMod(member) {
     if (!member || !member.roles) {
         return false;
     }
-    if(member.roles.some(r=>["Administrator", "Moderators", 'J.A.R.V.I.S.'].includes(r.name)) ) {
+    if(member.roles.cache.some(r=>["Administrator", "Moderators", 'J.A.R.V.I.S.'].includes(r.name)) ) {
         // has one of the roles
         return true;
       } else {
@@ -290,15 +290,15 @@ bot.on('message', async function (msg) {
         if (msg.mentions.members.first() && !msg.author.bot && !isAdminOrMod(msg.member)) {
             msg.channel
                 .send(`${msg.author}, it's directly against the rules of this channel to @ people in regards to a listing. Use PMs, @ them in #general-chat.`)
-                .then(reply => reply.delete(60000))
-            msg.delete(1000);
+                .then(reply => reply.delete({ timeout: 60000 }))
+            msg.delete({ timeout: 1000 });
             console.log(`   [MESSAGE DELETED][PUNISH NEEDED]`)
         } else if (msg.attachments.size > 0) {
             if (!msg.attachments.every(attachIsImage)) {
                 msg.channel
                     .send(`${msg.author}, you have to post a screenshot of your PROFILE, which shows your highest team power, your collection score, as well as your contact information in-game.`)
-                    .then(reply => reply.delete(60000))
-                msg.delete(1000);
+                    .then(reply => reply.delete({ timeout: 60000 }))
+                msg.delete({ timeout: 1000 });
                 console.log(`   [MESSAGE DELETED]`)
             } else {
                 let power = await getPower(msg);
@@ -350,7 +350,7 @@ bot.on('message', async function (msg) {
                 .send(`Thank you for posting. Please be aware that you can only post every 6 hours. Good luck in finding an alliance!\n\nYou can also view your post online at https://msf.gg/recruit/${msg.author.id}`)
                     .catch(() => msg.channel
                                     .send(`${msg.author}, make sure you have Direct Messages turned on so that Alliance Leaders can contact you directly.`)
-                                    .then(reply => reply.delete(300000)));
+                                    .then(reply => reply.delete({ timeout: 30000 })));
             }
         } else if (messageHasHyperlinkedImage(msg.content)) {
             let power = await getPower(msg);
@@ -396,12 +396,12 @@ bot.on('message', async function (msg) {
                     .send(`Thank you for posting. Please be aware that you can only post every 6 hours. Good luck in finding an alliance!\n\nYou can also view your post online at https://msf.gg/recruit/${msg.author.id}`)
                     .catch(() => msg.channel
                                     .send(`${msg.author}, make sure you have Direct Messages turned on so that Alliance Leaders can contact you directly.`)
-                                    .then(reply => reply.delete(300000)));
+                                    .then(reply => reply.delete({ timeout: 30000 })));
         } else if (!msg.author.bot && !isAdminOrMod(msg.member)) {
             msg.channel
                 .send(`${msg.author}, you have to post a screenshot of your PROFILE, which shows your highest team power, your collection score, as well as your contact information in-game.`)
-                .then(reply => reply.delete(60000))
-            msg.delete(1000);
+                .then(reply => reply.delete({ timeout: 60000 }))
+            msg.delete({ timeout: 1000 });
             console.log(`   [MESSAGE DELETED]`)
         }
     }
