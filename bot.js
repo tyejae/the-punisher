@@ -32,7 +32,8 @@ const GUILD_SERVER_IDS = {
     ]
 }
 
-bot.login(process.env.BOT_TOKEN);
+// bot.login(process.env.BOT_TOKEN);
+bot.login('NTA0NzAzMTk5NTQyNzcxNzEy.W9Cnew.WYSMesXX2gXW-ifDFk9e0iTFOWM');
 
 const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () => {
     const expired = await getExpiredRecruits();
@@ -198,7 +199,7 @@ async function getPower(message) {
     return power;
 }
 
-const BANNED_EMOJI = ['🖕', '🖕🏻', '🖕🏿', '🖕🏼', '🖕🏾', '🖕🏽', '💩', '🍆'];
+const BANNED_EMOJI = ['🖕', '🖕🏻', '🖕🏿', '🖕🏼', '🖕🏾', '🖕🏽', '💩', '🍆', ,'🇦'];
 const DELETE_REACTION = {};
 bot.on('raw', async (event) => {
     if (event.t === 'MESSAGE_REACTION_ADD') {
