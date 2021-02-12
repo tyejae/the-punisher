@@ -32,8 +32,7 @@ const GUILD_SERVER_IDS = {
     ]
 }
 
-// bot.login(process.env.BOT_TOKEN);
-bot.login('NTA0NzAzMTk5NTQyNzcxNzEy.W9Cnew.WYSMesXX2gXW-ifDFk9e0iTFOWM');
+bot.login(process.env.BOT_TOKEN);
 
 const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () => {
     const expired = await getExpiredRecruits();
@@ -199,11 +198,12 @@ async function getPower(message) {
     return power;
 }
 
-const BANNED_EMOJI = ['🖕', '🖕🏻', '🖕🏿', '🖕🏼', '🖕🏾', '🖕🏽', '💩', '🍆', ,'🇦'];
+const BANNED_EMOJI = ['🖕', '🖕🏻', '🖕🏿', '🖕🏼', '🖕🏾', '🖕🏽', '💩', '🍆'];
+const BANNED_LETTERS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
 const DELETE_REACTION = {};
 bot.on('raw', async (event) => {
     if (event.t === 'MESSAGE_REACTION_ADD') {
-        if (BANNED_EMOJI.indexOf(event.d.emoji.name) > -1) {
+        if (BANNED_EMOJI.indexOf(event.d.emoji.name) > -1 || BANNED_LETTERS.indexOf(event.d.emoji.name) > -1) {
             const g = bot.guilds.cache.array().find(guild => guild.id === event.d.guild_id);
             if (g) {
                 const c = g.channels.cache.array().find(c => c.id === event.d.channel_id);
@@ -213,8 +213,10 @@ bot.on('raw', async (event) => {
                         const member = await g.members.fetch(event.d.user_id);
                         DELETE_REACTION[event.d.user_id] = event.d.message_id;
                         if (member) {
-                            member.send(`**Inappropriate reactions are not allowed on the MARVEL Strike Force Discord.** Your reaction has been removed automatically. Please review the #read-me and #code-of-conduct channels to familiarize yourself with the server rules.`)
-                                .catch(()=>{})
+                            if (BANNED_EMOJI.indexOf(event.d.emoji.name) > -1) {
+                                member.send(`**Inappropriate reactions are not allowed on the MARVEL Strike Force Discord.** Your reaction has been removed automatically. Please review the #read-me and #code-of-conduct channels to familiarize yourself with the server rules.`)
+                                    .catch(()=>{})
+                            }
                         }
                         const logChannel = g.channels.cache.array().find(c => c.id === '387582681107660810');
                         if (logChannel) {
