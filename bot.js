@@ -15,6 +15,14 @@ const SERVERS = [
     'players-above-8m',
     'players-above-9m',
     'players-above-10m',
+    'players-above-11m',
+    'players-above-12m',
+    'players-above-13m',
+    'players-above-14m',
+    'players-above-15m',
+    'players-above-16m',
+    'players-above-17m',
+    'players-above-18m',
     'looking-for-alliance'];
 const GUILD_SERVER_IDS = {
     '382255096454578186': [   // MSF.gg Discord
@@ -28,7 +36,15 @@ const GUILD_SERVER_IDS = {
         '735583969877295156', // players-above-7m
         '735584007584219230', // players-above-8m
         '773274593607417896', // players-above-9m
-        '773274661001756695'  // players-above-10m
+        '773274661001756695', // players-above-10m
+        '820869516459507752', // players-above-11m
+        '820869593802342460', // players-above-12m
+        '820869693673832459', // players-above-13m
+        '820869817069207583', // players-above-14m
+        '820869904437608488', // players-above-15m
+        '820870013480599572', // players-above-16m
+        '820870109727424523', // players-above-17m
+        '820870237758554132', // players-above-18m
     ]
 }
 
@@ -40,11 +56,11 @@ const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () =>
         const guildId = recruit.guildId;
         const channelId = recruit.channelId;
         const messageId = recruit.messageId;
-        const guild = bot.guilds.cache.find(g => g.id === guildId);
+        const guild = bot.guilds.cache.array().find(g => g.id === guildId);
         if (guild) {
-            const channel = guild.channels.find(c => c.id === channelId);
+            const channel = guild.channels.cache.find(c => c.id === channelId);
             if (channel) {
-                channel.fetchMessage(messageId).then(message => {
+                channel.messages.fetch(messageId).then(message => {
                     if (message) {
                         message.delete();
                     }
@@ -61,7 +77,23 @@ const checkForNewRecruits = new cron.CronJob('* * * * *', async () => {
         bot.guilds.cache.array().forEach(g => {
             let channel;
             const servers = GUILD_SERVER_IDS[g.id];
-            if (power > 10000000) {
+            if (power > 18000000) {
+                channel = g.channels.cache.find(c => c.id === servers[18])
+            } else if (power > 17000000) {
+                channel = g.channels.cache.find(c => c.id === servers[17])
+            } else if (power > 16000000) {
+                channel = g.channels.cache.find(c => c.id === servers[16])
+            } else if (power > 15000000) {
+                channel = g.channels.cache.find(c => c.id === servers[15])
+            } else if (power > 14000000) {
+                channel = g.channels.cache.find(c => c.id === servers[14])
+            } else if (power > 13000000) {
+                channel = g.channels.cache.find(c => c.id === servers[13])
+            } else if (power > 12000000) {
+                channel = g.channels.cache.find(c => c.id === servers[12])
+            } else if (power > 11000000) {
+                channel = g.channels.cache.find(c => c.id === servers[11])
+            } else if (power > 10000000) {
                 channel = g.channels.cache.find(c => c.id === servers[10])
             } else if (power > 9000000) {
                 channel = g.channels.cache.find(c => c.id === servers[9])
@@ -318,6 +350,14 @@ bot.on('message', async function (msg) {
                         case 'players-above-8m': power = 8000001; break;
                         case 'players-above-9m': power = 9000001; break;
                         case 'players-above-10m': power = 10000001; break;
+                        case 'players-above-11m': power = 11000001; break;
+                        case 'players-above-12m': power = 12000001; break;
+                        case 'players-above-13m': power = 13000001; break;
+                        case 'players-above-14m': power = 14000001; break;
+                        case 'players-above-15m': power = 15000001; break;
+                        case 'players-above-16m': power = 16000001; break;
+                        case 'players-above-17m': power = 17000001; break;
+                        case 'players-above-18m': power = 18000001; break;
                     }
                 }
                 let content = msg.content;
@@ -370,6 +410,14 @@ bot.on('message', async function (msg) {
                     case 'players-above-8m': power = 8000001; break;
                     case 'players-above-9m': power = 9000001; break;
                     case 'players-above-10m': power = 10000001; break;
+                    case 'players-above-11m': power = 11000001; break;
+                    case 'players-above-12m': power = 12000001; break;
+                    case 'players-above-13m': power = 13000001; break;
+                    case 'players-above-14m': power = 14000001; break;
+                    case 'players-above-15m': power = 15000001; break;
+                    case 'players-above-16m': power = 16000001; break;
+                    case 'players-above-17m': power = 17000001; break;
+                    case 'players-above-18m': power = 18000001; break;
                 }
             }
             let content = msg.content;
