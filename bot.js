@@ -316,9 +316,23 @@ bot.on('messageDelete', async function (msg) {
 })
 
 bot.on('message', async function (msg) {
+    const guild = msg.guild;
     if (msg.content.indexOf('tyejae') > -1) {
-        console.log(`[INFO] ${msg.author.username} said, "${msg.content}"`)
+        if (guild) {
+            const tyejae = guild.members.cache.find(c => c.id === '188139999357566976');
+            if (tyejae) {
+                tyejae.send(`[INFO] ${msg.author.tag} said: \`\`\`${msg.content}\`\`\``)
+            }
+        }
     }
+    if (msg.channel && ['in-game-offers', 'in-game-mail'].indexOf(msg.channel.name) > -1) {
+        if (msg.content.length !== 0) {
+            msg.author.send(`\`${msg.channel.name}\` is an image only channel. If you were trying to post ${msg.channel.name}, please repost without any text.`);
+            msg.delete();
+            return;
+        }
+    }
+
     if (SERVERS.indexOf(msg.channel.name) > -1) {
         if (msg.author.bot) return;
         console.log(`[INFO - ${msg.channel.name}] ${msg.author.username} said, "${msg.content}"`)
