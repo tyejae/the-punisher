@@ -317,7 +317,7 @@ bot.on('messageDelete', async function (msg) {
 
 bot.on('message', async function (msg) {
     const guild = msg.guild;
-    if (msg.content.indexOf('tyejae') > -1) {
+    if (msg.content.includes('tyejae') || msg.content.includes('tye')) {
         if (guild) {
             const tyejae = guild.members.cache.find(c => c.id === '188139999357566976');
             if (tyejae) {
