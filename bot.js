@@ -48,6 +48,7 @@ const GUILD_SERVER_IDS = {
     ]
 }
 
+// bot.login(process.env.BOT_TOKEN);
 bot.login(process.env.BOT_TOKEN);
 
 const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () => {
@@ -134,7 +135,7 @@ const checkForNewRecruits = new cron.CronJob('* * * * *', async () => {
                     },
                 }).then(r => {
                     var postBody = {
-                        url: 'https://api.tyejae.com/services/msfggbot/updateLookingForAllianceIds',
+                        url: 'https://api.msf.gg/services/msfggbot/updateLookingForAllianceIds',
                         body: JSON.stringify({
                             memberId: recruit.memberId,
                             guildId: r.guild.id,
@@ -156,7 +157,7 @@ const checkForNewRecruits = new cron.CronJob('* * * * *', async () => {
 
 async function getNewRecruits() {
     return new Promise((resolve) => {
-        Request(`https://api.tyejae.com/services/msfggbot/getNewRecruits`, (error, response, body) => {
+        Request(`https://api.msf.gg/services/msfggbot/getNewRecruits`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 resolve(JSON.parse(body));
             } else {
@@ -168,7 +169,7 @@ async function getNewRecruits() {
 
 async function getExpiredRecruits() {
     return new Promise((resolve) => {
-        Request(`https://api.tyejae.com/services/msfggbot/getExpiredRecruits`, (error, response, body) => {
+        Request(`https://api.msf.gg/services/msfggbot/getExpiredRecruits`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 resolve(JSON.parse(body));
             } else {
@@ -205,7 +206,7 @@ async function getPower(message) {
     let userGuid;
     let power = 0;
     const userGuidPromise = new Promise((resolve) => {
-        Request(`https://api.tyejae.com/services/msfggbot/getUserGuid?memberId=${message.author.id}`, (error, response, body) => {
+        Request(`https://api.msf.gg/services/msfggbot/getUserGuid?memberId=${message.author.id}`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 userGuid = body;
             }
@@ -214,7 +215,7 @@ async function getPower(message) {
     });
     await Promise.all([userGuidPromise]);
     const rosterPromise = new Promise(resolve => {
-        Request(`https://api.tyejae.com/services/getRoster?userGuid=${userGuid}&nocache=${Date.now()}`, (error, response, body) => {
+        Request(`https://api.msf.gg/services/getRoster?userGuid=${userGuid}&nocache=${Date.now()}`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 try {
                     const obj = JSON.parse(body);
@@ -289,7 +290,7 @@ bot.once("ready", function() {
 bot.on('messageUpdate', (oldMessage, newMessage) => {
     if (SERVERS.indexOf(newMessage.channel.name) > -1 && !newMessage.author.bot) {
         var postBody = {
-            url: 'https://api.tyejae.com/services/msfggbot/updateLookingForAlliance',
+            url: 'https://api.msf.gg/services/msfggbot/updateLookingForAlliance',
             body: JSON.stringify({
                 memberId: newMessage.author.id,
                 description: encodeURIComponent(newMessage.content)
@@ -311,7 +312,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
 
 bot.on('messageDelete', async function (msg) {
     if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot) {
-        Request.get(`https://api.tyejae.com/services/msfggbot/cancelLookingForAlliance?memberId=${msg.author.id}`);
+        Request.get(`https://api.msf.gg/services/msfggbot/cancelLookingForAlliance?memberId=${msg.author.id}`);
     }
 })
 
@@ -381,7 +382,7 @@ bot.on('message', async function (msg) {
                     content = content.substr(0, 153) + '...';
                 }
                 var postBody = {
-                    url: 'https://api.tyejae.com/services/msfggbot/joinLookingForAlliance',
+                    url: 'https://api.msf.gg/services/msfggbot/joinLookingForAlliance',
                     body: JSON.stringify({
                         memberId: msg.author.id,
                         tag: msg.author.tag,
@@ -441,7 +442,7 @@ bot.on('message', async function (msg) {
                 content = content.substr(0, 153) + '...';
             }
             var postBody = {
-                url: 'https://api.tyejae.com/services/msfggbot/joinLookingForAlliance',
+                url: 'https://api.msf.gg/services/msfggbot/joinLookingForAlliance',
                 body: JSON.stringify({
                     memberId: msg.author.id,
                     tag: msg.author.tag,
