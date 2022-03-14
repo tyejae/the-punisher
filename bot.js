@@ -326,7 +326,9 @@ bot.on('message', async function (msg) {
             }
         }
     }
-    if (msg.channel && ['in-game-offers', 'in-game-mail'].indexOf(msg.channel.name) > -1) {
+    const OFFERS_CHANNEL_ID = '505818168619696138';
+    const IN_GAME_MAIL_CHANNEL_ID = '660656674628960266'
+    if (msg.channel && [OFFERS_CHANNEL_ID, IN_GAME_MAIL_CHANNEL_ID].indexOf(msg.channel.id) > -1) {
         if (msg.content.length !== 0) {
             msg.author.send(`\`${msg.channel.name}\` is an image only channel. If you were trying to post ${msg.channel.name}, please repost without any text.`);
             msg.delete();
