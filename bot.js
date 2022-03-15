@@ -312,7 +312,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
 
 bot.on('messageDelete', async function (msg) {
     if (SERVERS.indexOf(msg.channel.name) > -1 && !msg.author.bot) {
-        Request.get(`https://api-staging.msf.gg/services/msfggbot/cancelLookingForAlliance?memberId=${msg.author.id}`);
+        Request.get(`https://api-staging.msf.gg/services/msfggbot/cancelLookingForAlliance?memberId=${msg.author.id}&restUuid=THE_PUNISHER`);
     }
 })
 
