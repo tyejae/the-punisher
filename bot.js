@@ -143,7 +143,7 @@ const checkForNewRecruits = new cron.CronJob('* * * * *', async () => {
                             messageId: r.id
                         }),
                         headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
+                            'Content-Type': 'application/json'
                         }
                     };
                     Request.post(postBody, (error, res, body) => {
@@ -301,7 +301,7 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
                     .replace(/\*/g, '%2A')
             }),
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             }
         };
         Request.post(postBody, (error, res, body) => {
@@ -402,7 +402,7 @@ bot.on('message', async function (msg) {
                         notify: '1'
                     }),
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        'Content-Type': 'application/json'
                     }
                 };
                 Request.post(postBody, () => {});
@@ -456,7 +456,7 @@ bot.on('message', async function (msg) {
                     notify: '1'
                 }),
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json'
                 }
             };
             Request.post(postBody, () => {});
