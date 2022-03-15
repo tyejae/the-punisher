@@ -399,7 +399,8 @@ bot.on('message', async function (msg) {
                             .replace(/\)/g, '%29')
                             .replace(/\*/g, '%2A'),
                         rosterUrl: msg.attachments.first().proxyURL,
-                        notify: '1'
+                        notify: '1',
+                        restUuid: 'THE_PUNISHER'
                     }),
                     headers: {
                         'Content-Type': 'application/json'
