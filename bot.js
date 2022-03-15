@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const Request = require('request');
 const cron = require('cron');
+require('dotenv').config();
 
 const SERVERS = [
     'players-under-1m', 
@@ -48,7 +49,6 @@ const GUILD_SERVER_IDS = {
     ]
 }
 
-// bot.login(process.env.BOT_TOKEN);
 bot.login(process.env.BOT_TOKEN);
 
 const checkForExpiredRecruitMessages = new cron.CronJob('* * * * *', async () => {
@@ -328,7 +328,7 @@ bot.on('message', async function (msg) {
     }
     const OFFERS_CHANNEL_ID = '505818168619696138';
     const IN_GAME_MAIL_CHANNEL_ID = '660656674628960266'
-    if (msg.channel && [OFFERS_CHANNEL_ID, ING].indexOf(msg.channel.id) > -1) {
+    if (msg.channel && [OFFERS_CHANNEL_ID, IN_GAME_MAIL_CHANNEL_ID].indexOf(msg.channel.id) > -1) {
         if (msg.content.length !== 0) {
             msg.author.send(`\`${msg.channel.name}\` is an image only channel. If you were trying to post ${msg.channel.name}, please repost without any text.`);
             msg.delete();
